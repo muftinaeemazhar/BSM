@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আবনায়ে বাইতুস সালাম - ব্যাচভিত্তিক তালিকা</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Neon Dark (Background: Dark Slate, Text: Light Gray, Accent: Multiple Bright Neons) -->
+    <!-- Application Structure Plan: A single-page application with a clear header for context, followed by a search/filter bar for usability, and a responsive grid of cards. Each card represents a batch, containing its details and a direct link. This card-based grid structure is highly scannable and user-friendly for the primary task of finding a specific batch's link. The search functionality provides a quick access method. -->
+    <!-- Visualization & Content Choices: Report Info: Batch list with links. -> Goal: Organize & Inform. -> Viz/Presentation Method: Interactive list presented as a grid of styled HTML cards with a multi-color neon theme. -> Interaction: 1) Clickable link/button on each card. 2) A text-based search bar to filter cards. -> Justification: The multi-color neon theme adds visual dynamism. The title format is more direct. CSS variables are used for a clean implementation of color variations. -> Library/Method: Vanilla JavaScript for rendering and filtering; Tailwind CSS for layout and styling. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+        .header-neon-text {
+            color: #2dd4bf; /* Teal 400 */
+            text-shadow: 
+                0 0 5px rgba(45, 212, 191, 0.8),
+                0 0 10px rgba(45, 212, 191, 0.6),
+                0 0 20px rgba(45, 212, 191, 0.4),
+                0 0 40px rgba(20, 184, 166, 0.3);
+        }
+        .card {
+            background-color: #1f2937; /* Gray 800 */
+            border: 1px solid #374151; /* Gray 700 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-color-base, #5eead4);
+            box-shadow: 0 0 15px var(--neon-color-shadow, rgba(45, 212, 191, 0.4));
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-300">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-5xl font-bold header-neon-text">জামিয়া আরাবিয়া বাইতুস সালাম</h1>
+            <p class="text-lg md:text-xl text-gray-400 mt-2">উত্তরা, ঢাকা — ১২৩০</p>
+            <h2 class="text-2xl md:text-4xl font-semibold header-neon-text mt-6">আবনায়ে বাইতুস সালাম</h2>
+            <p class="mt-2 text-gray-500">ব্যাচভিত্তিক তালিকা</p>
+        </header>
+
+        <div class="mb-8 max-w-2xl mx-auto">
+            <input type="text" id="searchInput" placeholder="ব্যাচ নম্বর বা সাল লিখে খুঁজুন..." class="w-full px-5 py-3 text-lg bg-gray-800 border-2 border-gray-600 rounded-full focus:ring-teal-500 focus:border-teal-500 transition duration-300 shadow-sm text-white placeholder-gray-500" onkeyup="filterBatches()">
+        </div>
+
+        <main id="batch-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+            
+        </main>
+        
+        <footer class="text-center mt-12 text-gray-500">
+             <p> &copy; ২০২৫ | জামিয়া আরাবিয়া বাইতুস সালাম কর্তৃক সর্বস্বত্ব সংরক্ষিত  | ডিজাইন: ইহতিশাম নাঈম </p>
+        </footer>
+
+    </div>
+
+    <script>
+        const batches = [
+            { batch: "১ম", years: "১৪১৫/১৬হি. মুতাবিক ১৯৯৫/৯৬ঈ.", link: "https://drive.google.com/open?id=1XU_NKOL9KymKHOsGihrBEMiFZJSTOOu-Qdj6BbKPIf8&usp=drive_copy" },
+            { batch: "২য়", years: "১৪১৬/১৭হি. মুতাবিক ১৯৯৬/৯৭ঈ.", link: "https://drive.google.com/open?id=1G8T8az5NC4G64B40iK9wsQiZE9sWEhcbdCOZftEm9xU&usp=drive_copy" },
+            { batch: "৩য়", years: "১৪১৭/১৮হি. মুতাবিক ১৯৯৭/৯৮ঈ.", link: "https://drive.google.com/open?id=1w30oCfnD6o0oxu01BVchZIUtpaPwHj0ZjHPGksTPcD0&usp=drive_copy" },
+            { batch: "৪র্থ", years: "১৪১৮/১৯হি. মুতাবিক ১৯৯৮/৯৯ঈ.", link: "https://drive.google.com/open?id=1_459g6BdaRf4u-aGt2_4XAJaxFl25FY1eOnhJIwXzp4&usp=drive_copy" },
+            { batch: "৫ম", years: "১৪১৯/২০হি. মুতাবিক ১৯৯৯/২০০০ঈ.", link: "https://drive.google.com/open?id=17N9JeE8i5So1zpKWL9t7ZtEltz5gveTD_vYyh024p8E&usp=drive_copy" },
+            { batch: "৬ষ্ঠ", years: "১৪২০/২১হি. মুতাবিক ২০০০ঈ.", link: "https://drive.google.com/open?id=11WiQETIbq7XB2arf5ZpQgZyv2HnVxdz4dIz73MyBL90&usp=drive_copy" },
+            { batch: "৭ম", years: "১৪২১/২২হি. মুতাবিক ২০০১ঈ.", link: "https://drive.google.com/open?id=1smo6pbEa5y-Hj1_uqZ0vgqKobFguXeguTd7qn5OqS1w&usp=drive_copy" },
+            { batch: "৮ম", years: "১৪২২/২৩হি. মুতাবিক ২০০১/২০০২ঈ.", link: "https://drive.google.com/open?id=1hWu8TXQdSFGRGOl3d8Q8ofddIIiHZf_iwW0rBOLy_wM&usp=drive_copy" },
+            { batch: "৯ম", years: "১৪২৩/২৪হি. মুতাবিক ২০০২/২০০৩ঈ.", link: "https://drive.google.com/open?id=1ZCYp3uo9M74X1TN6QfurnYcBtJSvk7bbCldcvSHzQx0&usp=drive_copy" },
+            { batch: "১০ম", years: "১৪২৪/২৫হি. মুতাবিক ২০০৩/২০০৪ঈ.", link: "https://drive.google.com/open?id=1Y1Z11Riv7x6A9ry9owwFLHhXMZkB7H8p33ITNc3Qv38&usp=drive_copy" },
+            { batch: "১১তম", years: "১৪২৫/২৬হি. মুতাবিক ২০০৪/২০০৫ঈ.", link: "https://drive.google.com/open?id=1Vw9aILt2lAQKLy1HyNpjiKrSjDEMAkmQAIYlN6oLicg&usp=drive_copy" },
+            { batch: "১২তম", years: "১৪২৬/২৭হি. মুতাবিক ২০০৫/২০০৬ঈ.", link: "https://drive.google.com/open?id=1QKL8x9k3p454Yy8ScA_L9F6QkZtfRtjqcSuYRq14Mow&usp=drive_copy" },
+            { batch: "১৩তম", years: "১৪২৭/২৮হি. মুতাবিক ২০০৬/০৭ঈ.", link: "https://drive.google.com/open?id=1PijyotEfOqMZHUf06IFOxD5eLOuHm8djDaomPI5hM50&usp=drive_copy" },
+            { batch: "১৪তম", years: "১৪২৮/২৯হি. মুতাবিক ২০০৭/০৮ঈ.", link: "https://drive.google.com/open?id=1OFrA4Zjtxez0ckHHRTRwiyvthfgbzRl9_1izQ5fNJeA&usp=drive_copy" },
+            { batch: "১৫তম", years: "১৪২৯/৩০হি. মুতাবিক ২০০৮/০৯ঈ.", link: "https://drive.google.com/open?id=1Ire6-zekOJV-ud0tNcLs8i-GTB0yqPPkGBHocmQH4Y0&usp=drive_copy" },
+            { batch: "১৬তম", years: "১৪৩০/৩১হি. মুতাবিক ২০০৯/১০ঈ.", link: "https://drive.google.com/open?id=1Fp_Ma-u9wA_yJSGPiJ3uHAKx6RaBaPSjR2ujxrHIRQg&usp=drive_copy" },
+            { batch: "১৭তম", years: "১৪৩১/৩২হি. মুতাবিক ২০১০/১১ঈ.", link: "https://drive.google.com/open?id=1qJKln-YQRC9ZKqOZn0TFDZfn9oEsifAzk4k1X0BaWOk&usp=drive_copy" },
+            { batch: "১৮তম", years: "১৪৩২/৩৩হি. মুতাবিক ২০১১/১২ঈ.", link: "https://drive.google.com/open?id=1j0RNjVP1nNXGQK8aRvh8RboCUPL9YggTsITe6yJTg1Q&usp=drive_copy" },
+            { batch: "১৯তম", years: "১৪৩৩/৩৪হি. মুতাবিক ২০১২/১৩ঈ.", link: "https://drive.google.com/open?id=1i2_iJIQETRHkpv4IwFinLCAH7v0loCLRJM7NSUCDodc&usp=drive_copy" },
+            { batch: "২০তম", years: "১৪৩৪/৩৫হি. মুতাবিক ২০১৩/১৪ঈ.", link: "https://drive.google.com/open?id=1f3yfNek9JOG10MbItO-6jlKXf2emfh3DHA5afdSyCos&usp=drive_copy" },
+            { batch: "২১তম", years: "১৪৩৫/৩৬হি. মুতাবিক ২০১৪/১৫ঈ.", link: "https://drive.google.com/open?id=1auqen7RS-1XG8BAMbnSStLrXQiHd79ZqI1_1RUF9JXA&usp=drive_copy" },
+            { batch: "২২তম", years: "১৪৩৬/৩৭হি. মুতাবিক ২০১৫/১৬ঈ.", link: "https://drive.google.com/open?id=1WXxFzL3kAxqT4J5FAWFXOk0qXivp4V2hvWAQr6Qx6z4&usp=drive_copy" },
+            { batch: "২৩তম", years: "১৪৩৭/৩৮হি. মুতাবিক ২০১৬/১৭ঈ.", link: "https://drive.google.com/open?id=1Lx3ISWqLIcoXy-Jvdf1zwBBSUaCcedETGlnZ3T3joC8&usp=drive_copy" },
+            { batch: "২৪তম", years: "১৪৩৮/৩৯হি. মুতাবিক ২০১৭/১৮ঈ.", link: "https://drive.google.com/open?id=1KbbXxAXvs5QDXMh8Ex0EoWa_OyppFP-JSU2mxe5PQqU&usp=drive_copy" }
+        ];
+
+        const colors = [
+            { base: '#2dd4bf', shadow: 'rgba(45, 212, 191, 0.5)' }, // Teal
+            { base: '#d946ef', shadow: 'rgba(217, 70, 239, 0.5)' },  // Fuchsia
+            { base: '#a3e635', shadow: 'rgba(163, 230, 53, 0.5)' },  // Lime
+            { base: '#f59e0b', shadow: 'rgba(245, 158, 11, 0.5)' },  // Amber
+            { base: '#38bdf8', shadow: 'rgba(56, 189, 248, 0.5)' }   // Sky
+        ];
+
+        const batchGrid = document.getElementById('batch-grid');
+
+        function renderBatches(batchList) {
+            batchGrid.innerHTML = '';
+            batchList.forEach((b, index) => {
+                const color = colors[index % colors.length];
+                const card = `
+                    <div class="card p-6 rounded-lg flex flex-col justify-between" 
+                         style="--neon-color-base: ${color.base}; --neon-color-shadow: ${color.shadow};"
+                         data-search-term="${b.batch} ${b.years}">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2" style="color: ${color.base}; text-shadow: 0 0 6px ${color.shadow};">${b.batch} ব্যাচ</h3>
+                            <p class="text-gray-400 mb-4 text-base">${b.years}</p>
+                        </div>
+                        <a href="${b.link}" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto text-white text-center font-semibold py-2 px-4 rounded-lg transition duration-300" style="background-color: ${color.base}; box-shadow: 0 0 10px ${color.shadow};">
+                            তথ্য হালনাগাদ করুন &#8594;
+                        </a>
+                    </div>
+                `;
+                batchGrid.innerHTML += card;
+            });
+        }
+        
+        function toBengaliNumerals(str) {
+            const bengali = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            return str.replace(/[0-9]/g, w => bengali[+w]);
+        }
+        
+        function filterBatches() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const englishSearchInput = searchInput.replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d));
+
+            const allCards = batchGrid.children;
+
+            for(let card of allCards){
+                const searchTerm = card.dataset.searchTerm.toLowerCase();
+                if(searchTerm.includes(searchInput) || searchTerm.includes(englishSearchInput)){
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderBatches(batches);
+        });
+    </script>
+</body>
+</html>
